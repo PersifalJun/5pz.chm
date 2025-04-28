@@ -130,6 +130,10 @@ public class Main {
         double[] temp = new double[N];
         double[] x = new double[N];
 
+        // Находим максимальное сингулярное число
+        double maxSigma = Sigma[0][0];
+        double threshold = maxSigma * 1e-12; // Относительный порог
+
         // y = U^T * f
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
@@ -137,9 +141,9 @@ public class Main {
             }
         }
 
-        // temp = Sigma^-1 * y
+        // temp = Sigma^-1 * y (но только если sigma[i] не слишком маленькая)
         for (int i = 0; i < N; i++) {
-            if (Math.abs(Sigma[i][i]) > 1e-15) {
+            if (Math.abs(Sigma[i][i]) > threshold) {
                 temp[i] = y[i] / Sigma[i][i];
             } else {
                 temp[i] = 0;
